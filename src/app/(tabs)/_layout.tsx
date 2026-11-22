@@ -40,6 +40,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="kegiatan"
+        options={{
+          title: "Kegiatan",
+          tabBarLabel: "Kegiatan",
+          headerTitle: "Jadwal Kegiatan Prodi",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar-outline" size={size} color={color as string} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="riwayat"
         options={{
           title: "Riwayat Studi",
@@ -56,16 +67,6 @@ export default function TabLayout() {
           tabBarLabel: "Profil",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color as string} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="kegiatan"
-        options={{
-          title: "Kegiatan",
-          tabBarLabel: "Kegiatan",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color as string} />
           ),
         }}
       />

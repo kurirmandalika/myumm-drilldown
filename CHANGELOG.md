@@ -49,12 +49,13 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [0.2.0] - 2026-11-23
 ### Added
-- Layar Dashboard (S1) dengan kartu ringkasan status mata kuliah yang dapat ditekan (FR-01, UXR-03).
-- Komponen `StatusSummaryCard` dengan penanda visual eksplisit berupa ikon chevron "›" dan teks "Lihat rincian" (FR-01).
-- Komponen `PressableCard` dengan umpan balik visual instan (ripple/highlight ≤ 100 ms) dan proteksi debounce untuk mencegah navigasi ganda (FR-05, UXR-02).
-- Pemisahan visual yang tegas antara elemen informasi statis (IPK dan SKS kumulatif) dan kartu aksi interaktif agar tidak menimbulkan *misleading affordance* (FR-01).
-- Implementasi tipe data Kegiatan Prodi dengan fitur baru (kategori, status pendaftaran, label "Baru") dan pembaruan dummy data (FR-01, FR-08).\
-- Penambahan tampilan pratinjau Jadwal Kegiatan Prodi pada Dashboard serta penambahan tab Kegiatan (FR-01, FR-08).
+- **Milestone 1 (Data):** Model dan data dummy jadwal kegiatan prodi dengan tanggal relatif ISO datetime, kategori (Seminar, Workshop, Kuliah Tamu, Lomba, Akademik), status pendaftaran, serta utilitas penyimpanan lokal pengingat dan cache offline berbasis AsyncStorage (FR-01, FR-05, FR-08).
+- **Milestone 2 (Dashboard):** Layar Dashboard K1 dengan pratinjau 3 kegiatan terdekat, keterangan waktu pembaruan terakhir "Diperbarui [waktu]", tautan "Lihat semua ›" menuju K2, kartu ringkas dengan label "Baru"/"Hari ini"/"Besok", serta penyesuaian tab navigasi bawah Beranda · Kegiatan · Riwayat Studi · Profil (FR-01, FR-11).
+- **Milestone 3 (Daftar Kegiatan):** Layar K2 Daftar Kegiatan Prodi dengan tab Akan Datang & Selesai beserta penghitung jumlah, filter kategori interaktif (Semua, Seminar, Workshop, Kuliah Tamu, Lomba, Akademik), pengelompokan per minggu (Minggu ini, Minggu depan, Bulan ini, Nanti), pull-to-refresh dengan penambahan kegiatan baru, label status Baru/Hari ini/Besok, serta indikator lonceng pengingat aktif (FR-02, FR-03, FR-09).
+- **Milestone 4 (Detail Kegiatan):** Layar K3 Detail Kegiatan dengan informasi lengkap (penyelenggara, tanggal, waktu, lokasi, status pendaftaran), tombol kontekstual "Daftar" hanya saat status dibuka dan tautan tersedia, tombol utama "Ingatkan saya" / "Pengingat aktif · Ubah", serta pemisahan tegas elemen interaktif dan statis (FR-04, FR-11).
+- **Milestone 5 (Pengingat):** Modal K4 Atur Pengingat (bottom sheet dengan pilihan waktu 1 hari, 3 jam, 1 jam, tombol simpan/hapus/batal), dialog K5 Konfirmasi Pengingat dengan aksi cepat ke Kegiatan Saya, dan layar K6 Kegiatan Saya yang menampilkan seluruh agenda berpengingat urut terdekat lengkap dengan state kosong (FR-05, FR-06).
+- **Milestone 6 (State Handling & Cache Offline):** Penanganan state komprehensif pada jadwal kegiatan (skeleton loading, pesan gagal koneksi + tombol "Coba lagi", fallback data tersimpan / cache offline dengan banner pembaruan terakhir, empty state + aksi lanjut), serta toggle simulator demo di Profil untuk gagal memuat kegiatan & tidak ada kegiatan (FR-07, FR-08, FR-10).
+- **Milestone 7 (Rapikan & Verifikasi Acceptance Criteria):** Verifikasi seluruh Acceptance Criteria 1 s.d. 9 dari PRD v2, kepatuhan navigasi bebas jalan buntu, pemeliharaan fitur status mata kuliah v1 tanpa degradasi, serta pemutakhiran README.md.
 
 ## [0.1.0] - 2026-11-23
 ### Added

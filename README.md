@@ -1,43 +1,62 @@
-# myUMM Student — Drill-down Status Mata Kuliah
+# myUMM Student — Jadwal Kegiatan Prodi & Drill-down Status Akademik
 
-Prototype aplikasi mobile **myUMM Student** dengan fitur drill-down interaktif dari kartu ringkasan status akademik ke daftar dan rincian mata kuliah, beserta jalur alternatif Riwayat Studi dan jadwal kegiatan prodi.
+Prototype aplikasi mobile **myUMM Student** (iOS, Android, & Web via Expo) dengan fitur utama **Jadwal Kegiatan Prodi** (melihat kegiatan terbaru, membuka detail, dan menyimpan pengingat) serta fitur pelengkap **Drill-down Status Mata Kuliah** dan **Riwayat Studi**.
 
-Dikembangkan berdasarkan dokumen spesifikasi kebutuhan **Worksheet 8 — UX Requirements (UXR-01 s.d. UXR-08)** dan **PRD.md**.
+Dikembangkan berdasarkan dokumen spesifikasi kebutuhan **PRD v2**, **Worksheet 8 (M8, UXR-07)**, dan pengalaman langsung mahasiswa UMM.
 
 ---
 
 ## Identitas Proyek
 
 - **Produk:** myUMM Student (iOS, Android, & Web via Expo)
-- **Fitur Utama:** Drill-down dari kartu ringkasan status mata kuliah ke rincian mata kuliah
+- **Fitur Utama:** Jadwal Kegiatan Prodi (Melihat kegiatan terbaru, detail lengkap, filter kategori, pengingat lokal AsyncStorage, dan Kegiatan Saya)
+- **Fitur Pendukung:** Drill-down status mata kuliah, Riwayat Studi accordion, Simulator State Demo
 - **Penyusun:** Tifsan Ariel Pratama (NIM: 202310370311349)
 - **Mata Kuliah:** Rekayasa Interaksi C — Program Studi Informatika, Universitas Muhammadiyah Malang
-- **Versi:** 1.0.0
+- **Versi:** 2.0.0 (PRD v2)
 
 ---
 
-## Masalah yang Diselesaikan
+## Masalah yang Diselesaikan (PRD v2)
 
-Pada aplikasi myUMM Student sebelumnya, ditemukan masalah interaksi pada dashboard:
-1. **Misleading Affordance (M2):** Kartu ringkasan status kelulusan tampak seperti tombol yang bisa ditekan, tetapi statis dan tidak merespons ketukan pengguna.
-2. **Ketiadaan Umpan Balik (M3):** Tidak ada umpan balik visual saat kartu ditekan sehingga pengguna menekan berulang kali atau mengira aplikasi macet.
-3. **Data Kurang Spesifik (M1, M6, M7):** Dashboard hanya menampilkan angka tanpa daftar nama mata kuliah, sehingga mahasiswa khawatir ada mata kuliah wajib yang belum lulus dan terpaksa berpindah ke web portal kampus.
-4. **Jalur Buntu (M4, M5, M8):** Alur menuju rincian status studi tidak jelas dan agenda prodi tidak dapat dibuka.
+1. **Bagian Kegiatan Tidak Dapat Dibuka (M8):** Di dashboard myUMM Student asli, bagian Jadwal Kegiatan Prodi tidak dapat diklik.
+2. **Kegiatan Terbaru Tidak Termuat (M9):** Pengguna melihat informasi usang atau kosong tanpa penjelasan.
+3. **Waktu Pembaruan Tidak Jelas (M10):** Pengguna tidak tahu kapan data terakhir diperbarui sehingga tidak yakin informasinya masih berlaku.
+4. **Harus Mencari di Kanal Lain (M11):** Mahasiswa terpaksa mencari informasi kegiatan di grup chat atau media sosial prodi.
+5. **Mudah Lupa Jadwal Kegiatan (M12):** Tidak ada pengingat lokal untuk kegiatan yang ingin diikuti.
 
 ---
 
-## Solusi & Pemetaan Kebutuhan Fungsional
+## Solusi & Pemetaan Kebutuhan Fungsional (PRD v2)
 
 | ID Kebutuhan | Deskripsi Implementasi | Terpenuhi di |
 |---|---|---|
-| **FR-01** | Setiap kartu ringkasan di Dashboard bisa ditekan dengan affordance visual eksplisit (ikon `›` dan teks *"Lihat rincian"*). Elemen informasi murni (IPK dan SKS total) dibedakan secara tegas agar tidak tampak seperti tombol. | `StatusSummaryCard.tsx`, `AcademicHeader.tsx` |
-| **FR-02** | Menekan kartu status di Dashboard langsung membuka layar Daftar Mata Kuliah (S2) dalam 1 ketukan dengan tab yang bersesuaian langsung aktif. | `src/app/mata-kuliah/index.tsx` |
-| **FR-03** | Layar S2 menampilkan kode, nama, SKS, semester kurikulum, nilai, dan label badge *"Wajib/Pilihan"* serta jumlah prasyarat. Tersedia filter *"Hanya Wajib"* untuk menjawab mata kuliah wajib yang belum lulus dalam ≤ 30 detik. Angka sinkron dengan Dashboard. | `src/app/mata-kuliah/index.tsx`, `CourseListItem.tsx` |
-| **FR-04** | Menekan mata kuliah di daftar (S2) maupun riwayat studi (S4) membuka Detail Mata Kuliah (S3) lengkap dengan checklist prasyarat dan daftar mata kuliah lanjutan yang mensyaratkannya. | `src/app/mata-kuliah/[kode].tsx` |
-| **FR-05** | Umpan balik visual langsung (< 100 ms) saat elemen ditekan (*opacity highlight* dan *ripple*), disertai proteksi *debounce* untuk mencegah navigasi ganda (*double-tap*). | `PressableCard.tsx` |
-| **FR-06** | Menu navigasi bawah selalu menampilkan tab **Riwayat Studi** (S4) dengan ringkasan IPK kumulatif dan tampilan *accordion* per semester yang dapat dibuka/tutup. | `src/app/(tabs)/riwayat.tsx` |
-| **FR-07** | Setiap kondisi gagal atau kosong memiliki penjelasan penyebab yang jelas dan **satu aksi lanjutan kontekstual**. Disediakan **Simulator Pengujian State** di tab Profil untuk menguji kondisi *error state* dan *empty state*. | `ErrorState.tsx`, `EmptyState.tsx`, `profil.tsx` |
-| **FR-08** | Item Jadwal Kegiatan Prodi di Dashboard dapat ditekan untuk membuka Detail Kegiatan Prodi (S6) berisi tanggal, waktu, lokasi, deskripsi agenda, serta aksi simpan pengingat. | `src/app/kegiatan/[id].tsx`, `ProdiActivitySection.tsx` |
+| **FR-01** | Pratinjau 3 kegiatan akan datang terdekat di Dashboard (K1), kartu dapat ditekan ke K3, tautan "Lihat semua ›" ke K2. | `src/app/(tabs)/index.tsx` |
+| **FR-02** | Layar K2 Daftar Kegiatan Prodi dengan tab Akan Datang / Selesai (dengan jumlah), filter kategori (Semua, Seminar, Workshop, Kuliah Tamu, Lomba, Akademik), dan pengelompokan per minggu (Minggu ini, Minggu depan, Bulan ini, Nanti). | `src/app/kegiatan/index.tsx`, `src/app/(tabs)/kegiatan.tsx` |
+| **FR-03** | Keterangan "Diperbarui [waktu]" pada K1 dan K2. Fitur pull-to-refresh di K2 yang menambahkan 1 kegiatan baru pada muat ulang pertama. | `src/app/(tabs)/index.tsx`, `src/app/kegiatan/index.tsx`, `AcademicContext.tsx` |
+| **FR-04** | Layar K3 Detail Kegiatan dengan info lengkap (kategori, waktu, tempat, penyelenggara, deskripsi, status pendaftaran). Tombol "Daftar" muncul kondisional bila status dibuka. | `src/app/kegiatan/[id].tsx` |
+| **FR-05** | Pengaturan pengingat (K4) lewat bottom sheet (1 hari, 3 jam, 1 jam sebelumnya) tersimpan lokal di AsyncStorage, dapat diubah dan dihapus. | `src/app/kegiatan/[id].tsx`, `src/utils/pengingat.ts` |
+| **FR-06** | Konfirmasi pengingat (K5) dengan ringkasan dan tautan ke Kegiatan Saya (K6) yang mencantumkan seluruh agenda berpengingat. | `src/app/kegiatan/[id].tsx`, `src/app/kegiatan/saya.tsx` |
+| **FR-07** | State loading (skeleton), gagal koneksi dengan tombol "Coba lagi", dan kondisi kosong dengan 1 aksi lanjutan. | `ErrorState.tsx`, `EmptyState.tsx`, `LoadingSkeleton.tsx`, `kegiatan/index.tsx` |
+| **FR-08** | Offline cache: bila gagal memuat tetapi ada data tersimpan, tampilkan data lama dengan banner waktu pembaruan terakhir dan tombol "Coba lagi". | `src/context/AcademicContext.tsx`, `src/app/kegiatan/index.tsx`, `pengingat.ts` |
+| **FR-09** | Label status: "Baru" untuk agenda ≤ 3 hari terakhir; "Hari ini" / "Besok" untuk kegiatan pada hari H / H+1. | `src/utils/pengingat.ts`, `src/app/kegiatan/index.tsx`, `(tabs)/index.tsx` |
+| **FR-10** | Toggle demo di tab Profil: "Simulasikan gagal memuat kegiatan" dan "Simulasikan tidak ada kegiatan" (beserta toggle simulasi v1). | `src/app/(tabs)/profil.tsx` |
+| **FR-11** | Umpan balik visual langsung (< 100 ms) saat ditekan dan pemisahan tegas elemen informasi statis vs tombol aksi. | `PressableCard.tsx`, theme.ts |
+
+---
+
+## Cara Mencoba Alur Utama (User Flow 6.1)
+
+1. Buka aplikasi, layar **Dashboard** tampil.
+2. Di bagian **Jadwal Kegiatan Prodi**, terlihat 3 kegiatan terdekat, keterangan "Diperbarui ...", dan tautan "Lihat semua ›".
+3. Tekan salah satu kegiatan untuk langsung membuka **Detail Kegiatan** (Alur cepat 1 ketukan).
+4. Atau tekan "Lihat semua ›" / tab **Kegiatan** di navigasi bawah untuk membuka **Daftar Kegiatan Prodi**.
+5. Tarik layar ke bawah (*pull-to-refresh*): kegiatan baru berlabel **"Baru"** akan muncul di daftar.
+6. Tekan kegiatan untuk masuk ke **Detail Kegiatan**.
+7. Tekan tombol **"Ingatkan saya"**, pilih waktu (misal "1 hari sebelumnya"), lalu tekan **"Simpan pengingat"**.
+8. Dialog **Konfirmasi Pengingat** tampil. Tekan **"Lihat Kegiatan Saya"**.
+9. Halaman **Kegiatan Saya** menampilkan kegiatan yang baru saja disimpan pengingatnya.
+10. Buka tab **Profil** untuk mencoba simulator pengujian gagal memuat kegiatan atau data kosong.
 
 ---
 

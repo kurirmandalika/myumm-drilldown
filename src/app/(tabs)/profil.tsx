@@ -17,31 +17,45 @@ export default function ProfilScreen() {
     mahasiswa,
     simulateError,
     simulateEmpty,
+    simulateKegiatanError,
+    simulateKegiatanEmpty,
     setSimulateError,
     setSimulateEmpty,
+    setSimulateKegiatanError,
+    setSimulateKegiatanEmpty,
     refreshData,
+    refreshKegiatan,
     isLoading,
   } = useAcademic();
 
   const handleToggleError = (val: boolean) => {
     setSimulateError(val);
-    if (val) {
-      setSimulateEmpty(false);
-    }
+    if (val) { setSimulateEmpty(false); }
   };
 
   const handleToggleEmpty = (val: boolean) => {
     setSimulateEmpty(val);
-    if (val) {
-      setSimulateError(false);
-    }
+    if (val) { setSimulateError(false); }
+  };
+
+  const handleToggleKegiatanError = (val: boolean) => {
+    setSimulateKegiatanError(val);
+    if (val) { setSimulateKegiatanEmpty(false); }
+  };
+
+  const handleToggleKegiatanEmpty = (val: boolean) => {
+    setSimulateKegiatanEmpty(val);
+    if (val) { setSimulateKegiatanError(false); }
   };
 
   const handleResetData = async () => {
     setSimulateError(false);
     setSimulateEmpty(false);
+    setSimulateKegiatanError(false);
+    setSimulateKegiatanEmpty(false);
     await refreshData();
-    Alert.alert("Data Direset", "Data dummy akademik berhasil dimuat ulang ke kondisi normal.");
+    await refreshKegiatan();
+    Alert.alert("Data Direset", "Data dummy akademik dan kegiatan berhasil dimuat ulang ke kondisi normal.");
   };
 
   return (
@@ -110,20 +124,22 @@ export default function ProfilScreen() {
         </View>
       </View>
 
-      {/* Simulator State Demo (FR-07) */}
+      {/* Simulator State Demo (FR-07, FR-10) */}
       <View style={styles.demoCard}>
         <View style={styles.demoHeader}>
           <View style={styles.demoTitleGroup}>
             <Ionicons name="construct-outline" size={20} color={Colors.primary} />
-            <Text style={styles.demoTitle}>Simulator Pengujian State (FR-07)</Text>
+            <Text style={styles.demoTitle}>Simulator Pengujian State (FR-07, FR-10)</Text>
           </View>
           <Text style={styles.demoBadge}>Demo Tool</Text>
         </View>
         <Text style={styles.demoDesc}>
-          Gunakan toggle di bawah ini untuk menguji penanganan error (gagal memuat) dan kondisi kosong (empty state) pada seluruh layar aplikasi.
+          Gunakan toggle di bawah ini untuk menguji penanganan error dan kondisi kosong pada layar aplikasi.
         </Text>
 
-        {/* Toggle 1: Simulasikan Gagal Memuat */}
+        <Text style={styles.demoSubheading}>Status Mata Kuliah</Text>
+
+        {/* Toggle 1: Simulasikan Gagal Memuat Mata Kuliah */}
         <View style={styles.switchRow}>
           <View style={styles.switchTextContainer}>
             <Text style={styles.switchLabel}>Simulasikan gagal memuat</Text>
@@ -136,13 +152,13 @@ export default function ProfilScreen() {
             onValueChange={handleToggleError}
             trackColor={{ false: "#CBD5E1", true: Colors.status.belum_lulus.border }}
             thumbColor={simulateError ? Colors.primary : "#F8FAFC"}
-            accessibilityLabel="Toggle simulasikan gagal memuat"
+            accessibilityLabel="Toggle simulasikan gagal memuat mata kuliah"
           />
         </View>
 
         <View style={styles.divider} />
 
-        {/* Toggle 2: Simulasikan Data Kosong */}
+        {/* Toggle 2: Simulasikan Data Kosong Mata Kuliah */}
         <View style={styles.switchRow}>
           <View style={styles.switchTextContainer}>
             <Text style={styles.switchLabel}>Simulasikan data kosong</Text>
@@ -155,7 +171,47 @@ export default function ProfilScreen() {
             onValueChange={handleToggleEmpty}
             trackColor={{ false: "#CBD5E1", true: Colors.primaryLight }}
             thumbColor={simulateEmpty ? Colors.primary : "#F8FAFC"}
-            accessibilityLabel="Toggle simulasikan data kosong"
+            accessibilityLabel="Toggle simulasikan data kosong mata kuliah"
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.demoSubheading}>Jadwal Kegiatan Prodi</Text>
+
+        {/* Toggle 3: Simulasikan Gagal Memuat Kegiatan */}
+        <View style={styles.switchRow}>
+          <View style={styles.switchTextContainer}>
+            <Text style={styles.switchLabel}>Simulasikan gagal memuat kegiatan</Text>
+            <Text style={styles.switchSubLabel}>
+              Memicu error pada layar kegiatan; jika ada cache, data lama ditampilkan dengan banner
+            </Text>
+          </View>
+          <Switch
+            value={simulateKegiatanError}
+            onValueChange={handleToggleKegiatanError}
+            trackColor={{ false: "#CBD5E1", true: Colors.status.belum_lulus.border }}
+            thumbColor={simulateKegiatanError ? Colors.primary : "#F8FAFC"}
+            accessibilityLabel="Toggle simulasikan gagal memuat kegiatan"
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* Toggle 4: Simulasikan Tidak Ada Kegiatan */}
+        <View style={styles.switchRow}>
+          <View style={styles.switchTextContainer}>
+            <Text style={styles.switchLabel}>Simulasikan tidak ada kegiatan</Text>
+            <Text style={styles.switchSubLabel}>
+              Memicu state kosong pada layar jadwal kegiatan
+            </Text>
+          </View>
+          <Switch
+            value={simulateKegiatanEmpty}
+            onValueChange={handleToggleKegiatanEmpty}
+            trackColor={{ false: "#CBD5E1", true: Colors.primaryLight }}
+            thumbColor={simulateKegiatanEmpty ? Colors.primary : "#F8FAFC"}
+            accessibilityLabel="Toggle simulasikan tidak ada kegiatan"
           />
         </View>
 
@@ -336,6 +392,15 @@ const styles = StyleSheet.create({
     color: "#78350F",
     lineHeight: 16,
     marginBottom: Spacing.md,
+  },
+  demoSubheading: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: Colors.textPrimary,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   switchRow: {
     flexDirection: "row",

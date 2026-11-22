@@ -33,8 +33,16 @@ export default function RootLayout() {
             options={{ title: "Detail Mata Kuliah" }}
           />
           <Stack.Screen
+            name="kegiatan/index"
+            options={{ title: "Jadwal Kegiatan Prodi" }}
+          />
+          <Stack.Screen
             name="kegiatan/[id]"
-            options={{ title: "Detail Kegiatan Prodi" }}
+            options={{ title: "Detail Kegiatan" }}
+          />
+          <Stack.Screen
+            name="kegiatan/saya"
+            options={{ title: "Kegiatan Saya" }}
           />
         </Stack>
       </AcademicProvider>
