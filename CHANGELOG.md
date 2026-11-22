@@ -5,6 +5,18 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-23
+
+### Added
+- Layar Daftar Mata Kuliah (S2) dengan segmented tab interaktif (Belum Lulus, Sedang Ditempuh, Lulus) yang konsisten dengan angka di Dashboard (FR-02, FR-03, UXR-01, UXR-04).
+- Baris ringkasan jumlah mata kuliah dan total SKS aktif di atas daftar (FR-03).
+- Filter "Hanya wajib" untuk memfilter mata kuliah wajib dengan cepat (FR-03, UXR-04).
+- Pengurutan default mata kuliah: wajib terlebih dahulu, kemudian semester terkecil (FR-03).
+- Komponen `CourseItem` dengan urutan informasi terstandarisasi: nama (teks tebal), kode/SKS/semester, badge Wajib/Pilihan, nilai akhir, dan chevron '›' (FR-03, FR-05).
+- Layar Detail Mata Kuliah (S3) lengkap dengan bobot SKS, semester, nilai akhir, dosen pengampu, deskripsi, daftar prasyarat bersyarat yang bisa ditekan, dan daftar mata kuliah lanjutan (FR-04).
+- Banner peringatan khusus pada mata kuliah wajib yang berstatus Belum Lulus untuk memudahkan perencanaan KRS (FR-03, FR-04).
+- Penanganan state loading (skeleton), kosong, dan gagal dengan tombol "Coba lagi" pada S2 dan S3 (FR-05, FR-07).
+
 ## [0.2.0] - 2026-11-23
 
 ### Added
