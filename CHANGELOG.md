@@ -5,6 +5,20 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-23
+### Added
+- Dokumentasi komprehensif pada `README.md` mencakup latar belakang masalah (M1–M8), pemetaan kebutuhan fungsional (FR-01 s.d. FR-08), petunjuk instalasi dan pengujian, serta alur evaluasi prototipe.
+- Validasi Acceptance Criteria 1 s.d. 8 dari PRD.md:
+  - 1 ketukan drill-down dari Dashboard ke Daftar Mata Kuliah per status (FR-02, UXR-01).
+  - Umpan balik visual langsung < 100 ms dan proteksi double-tap (FR-05, UXR-02).
+  - Sinkronisasi jumlah angka kartu dan tab list dari single source of truth (FR-03).
+  - Filter "Hanya Wajib" dan badge penanda mata kuliah prioritas kelulusan (FR-03, UXR-04).
+  - Akses Riwayat Studi ≤ 2 ketukan melalui tab bar navigasi bawah (FR-06, UXR-05).
+  - Penanganan state gagal dengan tombol "Coba Lagi" dan state kosong dengan aksi lanjutan (FR-07, UXR-06).
+  - Simulator pengujian kondisi error dan empty pada tab Profil untuk keperluan demo (FR-07).
+  - Navigasi dua arah tanpa jalan buntu untuk alur utama maupun cadangan (UXR-07).
+  - Validasi kompilasi TypeScript dan web export bundling tanpa error (AC 8).
+
 ## [0.6.0] - 2026-11-23
 ### Added
 - Layar Detail Kegiatan Prodi (S6) yang menampilkan judul agenda, tanggal, waktu pelaksanaan, ruang/media pertemuan, deskripsi lengkap, serta penyelenggara (FR-08).
