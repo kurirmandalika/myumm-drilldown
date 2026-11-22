@@ -5,6 +5,14 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-23
+
+### Added
+- Layar Detail Kegiatan Prodi (S6) lengkap dengan kategori, judul, tanggal, waktu, tempat, narasumber, dan deskripsi acara (FR-08, UXR-07).
+- Navigasi interaktif dari item agenda kegiatan di Dashboard langsung ke Detail Kegiatan Prodi (FR-08).
+- Tombol aksi pembukaan tautan pendaftaran/informasi kegiatan ke peramban (FR-08).
+- Penanganan state pemuatan skeleton dan penanganan kesalahan dengan tombol "Coba lagi" pada layar kegiatan (FR-07, FR-08).
+
 ## [0.5.0] - 2026-11-23
 
 ### Added
