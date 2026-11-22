@@ -13,34 +13,68 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, FontSize, MinTouchSize, Shadows, Spacing } from '../../src/constants/theme';
 import { StatusCard } from '../../src/components/StatusCard';
+import { KegiatanCard } from '../../src/components/KegiatanCard';
+import { Skeleton } from '../../src/components/Skeleton';
 import {
   DUMMY_MAHASISWA,
-  DUMMY_KEGIATAN,
   getStats,
   subscribeSimulationState,
 } from '../../src/data/mataKuliah';
-import { StatusMK } from '../../src/types';
+import {
+  fetchKegiatanList,
+  formatRelativeTime,
+  getStoredPengingatList,
+  subscribeKegiatanSimulation,
+} from '../../src/data/kegiatan';
+import { StatusMK, Kegiatan } from '../../src/types';
 
 export default function DashboardScreen() {
   const router = useRouter();
   const [stats, setStats] = useState(getStats());
   const [refreshing, setRefreshing] = useState(false);
+  const [kegiatanList, setKegiatanList] = useState<Kegiatan[]>([]);
+  const [kegiatanLoading, setKegiatanLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<string>(new Date().toISOString());
+  const [activeReminders, setActiveReminders] = useState<string[]>([]);
 
-  // Subscribe to simulation changes (e.g. from Profil tab)
+  const loadKegiatan = useCallback(async (isRefresh = false) => {
+    try {
+      const [res, pengingat] = await Promise.all([
+        fetchKegiatanList(isRefresh, isRefresh ? 500 : 300),
+        getStoredPengingatList(),
+      ]);
+      setKegiatanList(res.data);
+      setLastUpdated(res.lastUpdated);
+      setActiveReminders(pengingat.map((p) => p.kegiatanId));
+    } catch {
+      // Fallback silently on dashboard
+    } finally {
+      setKegiatanLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const unsubscribe = subscribeSimulationState(() => {
+    loadKegiatan();
+
+    const unsubMK = subscribeSimulationState(() => {
       setStats(getStats());
     });
-    return unsubscribe;
-  }, []);
+    const unsubKeg = subscribeKegiatanSimulation(() => {
+      loadKegiatan(false);
+    });
 
-  const onRefresh = useCallback(() => {
+    return () => {
+      unsubMK();
+      unsubKeg();
+    };
+  }, [loadKegiatan]);
+
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setStats(getStats());
-      setRefreshing(false);
-    }, 600);
-  }, []);
+    setStats(getStats());
+    await loadKegiatan(true);
+    setRefreshing(false);
+  }, [loadKegiatan]);
 
   const handleCardPress = (status: StatusMK) => {
     router.push({
@@ -55,6 +89,17 @@ export default function DashboardScreen() {
       params: { id },
     });
   };
+
+  const handleLihatSemuaKegiatan = () => {
+    router.push('/(tabs)/kegiatan');
+  };
+
+  // Filter 3 upcoming activities closest to now (FR-01)
+  const now = Date.now();
+  const upcomingKegiatan = kegiatanList
+    .filter((k) => new Date(k.mulai).getTime() >= now)
+    .sort((a, b) => new Date(a.mulai).getTime() - new Date(b.mulai).getTime())
+    .slice(0, 3);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -118,7 +163,7 @@ export default function DashboardScreen() {
           </Text>
         </View>
 
-        {/* 3 Interactive Cards (FR-01, FR-05) */}
+        {/* 3 Interactive Cards (v1 preserved) */}
         <View style={styles.cardsContainer}>
           <StatusCard
             status="belum_lulus"
@@ -152,58 +197,63 @@ export default function DashboardScreen() {
           </Text>
         </View>
 
-        {/* Section: Jadwal Kegiatan Prodi (FR-08) */}
+        {/* Section: Jadwal Kegiatan Prodi (K1, FR-01, FR-03, FR-11) */}
         <View style={[styles.sectionHeader, { marginTop: Spacing.xl }]}>
-          <View style={styles.sectionTitleRow}>
-            <Ionicons name="calendar-outline" size={20} color={Colors.primary} style={{ marginRight: 6 }} />
-            <Text style={styles.sectionTitle}>Jadwal Kegiatan Prodi</Text>
-          </View>
-          <Text style={styles.sectionSubtitle}>
-            Agenda akademik dan kegiatan penting Program Studi Informatika
-          </Text>
-        </View>
+          <View style={styles.kegiatanHeaderRow}>
+            <View style={{ flex: 1 }}>
+              <View style={styles.sectionTitleRow}>
+                <Ionicons name="calendar-outline" size={20} color={Colors.primary} style={{ marginRight: 6 }} />
+                <Text style={styles.sectionTitle}>Jadwal Kegiatan Prodi</Text>
+              </View>
+              {/* Keterangan "Diperbarui [waktu]" (SKILL.md §5a, FR-03) */}
+              <Text style={styles.sectionSubtitle}>
+                Diperbarui {formatRelativeTime(lastUpdated)}
+              </Text>
+            </View>
 
-        <View style={styles.kegiatanList}>
-          {DUMMY_KEGIATAN.map((kegiatan) => (
+            {/* Tautan "Lihat semua ›" ke K2 (FR-01, ≤ 2 ketukan) */}
             <Pressable
-              key={kegiatan.id}
-              onPress={() => handleKegiatanPress(kegiatan.id)}
+              onPress={handleLihatSemuaKegiatan}
               accessibilityRole="button"
-              accessibilityLabel={`${kegiatan.judul}, tanggal ${kegiatan.tanggal}, tempat ${kegiatan.tempat}. Ketuk untuk melihat rincian kegiatan`}
-              android_ripple={{ color: 'rgba(0,0,0,0.06)' }}
+              accessibilityLabel="Lihat semua jadwal kegiatan prodi"
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={({ pressed }) => [
-                styles.kegiatanCard,
-                Shadows.card,
-                {
-                  opacity: pressed ? 0.8 : 1,
-                  backgroundColor: pressed ? Colors.cardPressed : Colors.cardBackground,
-                },
+                styles.lihatSemuaButton,
+                { opacity: pressed ? 0.6 : 1 },
               ]}
             >
-              <View style={styles.kegiatanContent}>
-                <View style={styles.kegiatanCategoryBadge}>
-                  <Text style={styles.kegiatanCategoryText}>{kegiatan.kategori}</Text>
-                </View>
-                <Text style={styles.kegiatanTitle} numberOfLines={2}>
-                  {kegiatan.judul}
-                </Text>
-                <View style={styles.kegiatanMetaRow}>
-                  <Ionicons name="time-outline" size={14} color={Colors.textSecondary} style={{ marginRight: 4 }} />
-                  <Text style={styles.kegiatanMetaText}>{kegiatan.tanggal}</Text>
-                </View>
-                <View style={styles.kegiatanMetaRow}>
-                  <Ionicons name="location-outline" size={14} color={Colors.textSecondary} style={{ marginRight: 4 }} />
-                  <Text style={styles.kegiatanMetaText} numberOfLines={1}>
-                    {kegiatan.tempat}
-                  </Text>
-                </View>
-              </View>
-              {/* Chevron signifier */}
-              <View style={styles.kegiatanChevron}>
-                <Ionicons name="chevron-forward" size={18} color={Colors.textSecondary} />
-              </View>
+              <Text style={styles.lihatSemuaText}>Lihat semua</Text>
+              <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
             </Pressable>
-          ))}
+          </View>
+        </View>
+
+        {/* 3 Kegiatan Terdekat (FR-01) */}
+        <View style={styles.kegiatanList}>
+          {kegiatanLoading ? (
+            <View style={{ gap: Spacing.md }}>
+              <Skeleton width="100%" height={90} borderRadius={12} />
+              <Skeleton width="100%" height={90} borderRadius={12} />
+              <Skeleton width="100%" height={90} borderRadius={12} />
+            </View>
+          ) : upcomingKegiatan.length > 0 ? (
+            upcomingKegiatan.map((kegiatan) => (
+              <KegiatanCard
+                key={kegiatan.id}
+                kegiatan={kegiatan}
+                hasPengingat={activeReminders.includes(kegiatan.id)}
+                onPress={() => handleKegiatanPress(kegiatan.id)}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyKegiatanBox}>
+              <Ionicons name="calendar-outline" size={32} color={Colors.textSecondary} style={{ marginBottom: 6 }} />
+              <Text style={styles.emptyKegiatanTitle}>Belum ada kegiatan terdekat</Text>
+              <Text style={styles.emptyKegiatanDesc}>
+                Semua kegiatan baru dari prodi akan muncul di sini.
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -298,6 +348,11 @@ const styles = StyleSheet.create({
     marginTop: Spacing.lg,
     marginBottom: Spacing.md,
   },
+  kegiatanHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   sectionTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -311,6 +366,19 @@ const styles = StyleSheet.create({
     fontSize: FontSize.secondary,
     color: Colors.textSecondary,
     marginTop: 2,
+  },
+  lihatSemuaButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: MinTouchSize,
+    justifyContent: 'center',
+    paddingHorizontal: Spacing.xs,
+  },
+  lihatSemuaText: {
+    fontSize: FontSize.secondary,
+    fontWeight: '700',
+    color: Colors.primary,
+    marginRight: 2,
   },
   cardsContainer: {
     paddingHorizontal: Spacing.lg,
@@ -343,53 +411,24 @@ const styles = StyleSheet.create({
   kegiatanList: {
     paddingHorizontal: Spacing.lg,
   },
-  kegiatanCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  emptyKegiatanBox: {
     backgroundColor: Colors.cardBackground,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: Colors.border,
-    padding: Spacing.lg,
-    marginBottom: Spacing.md,
-    minHeight: MinTouchSize,
+    padding: Spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  kegiatanContent: {
-    flex: 1,
-  },
-  kegiatanCategoryBadge: {
-    backgroundColor: Colors.primaryLight,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-    alignSelf: 'flex-start',
-    marginBottom: Spacing.xs,
-  },
-  kegiatanCategoryText: {
-    fontSize: FontSize.badge,
-    fontWeight: '600',
-    color: Colors.primary,
-  },
-  kegiatanTitle: {
+  emptyKegiatanTitle: {
     fontSize: FontSize.body,
     fontWeight: '600',
     color: Colors.textPrimary,
-    marginBottom: Spacing.xs,
+    marginBottom: 4,
   },
-  kegiatanMetaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 2,
-  },
-  kegiatanMetaText: {
+  emptyKegiatanDesc: {
     fontSize: FontSize.secondary,
     color: Colors.textSecondary,
-  },
-  kegiatanChevron: {
-    width: 32,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    marginLeft: Spacing.sm,
+    textAlign: 'center',
   },
 });

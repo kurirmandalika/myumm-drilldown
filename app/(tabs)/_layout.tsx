@@ -45,6 +45,18 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="kegiatan"
+        options={{
+          title: 'Kegiatan',
+          headerShown: false,
+          tabBarLabel: 'Kegiatan',
+          tabBarAccessibilityLabel: 'Tab Jadwal Kegiatan Prodi',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={24} color={color as string} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="riwayat"
         options={{
           title: 'Riwayat Studi',

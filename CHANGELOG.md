@@ -56,6 +56,9 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 ## [0.2.0] - 2026-11-23
 
 ### Added
+- Bagian Jadwal Kegiatan Prodi di Dashboard dengan 3 kegiatan terdekat, keterangan "Diperbarui [waktu]", blok tanggal visual, badge "Baru"/"Hari ini"/"Besok", dan tautan "Lihat semua ›" (K1, FR-01, FR-03, FR-11).
+- Tab Kegiatan pada navigasi bawah (Beranda, Kegiatan, Riwayat Studi, Profil) dan navigasi 1 ketukan dari Dashboard ke detail kegiatan (K1, FR-01, FR-11).
+- Komponen `KegiatanCard` dengan blok tanggal di kiri, badge kategori, indikator pengingat aktif, dan signifier chevron interaktif (FR-01, FR-11).
 - Model data `Kegiatan`, `Pengingat`, serta generator tanggal relatif ISO untuk 14 agenda kegiatan prodi mencakup 10 kegiatan akan datang dan 4 kegiatan selesai di seluruh 5 kategori (FR-05, FR-08, FR-10).
 - Penyimpanan lokal pengingat kegiatan dan cache data tersimpan menggunakan AsyncStorage untuk mendukung akses offline (FR-05, FR-08).
 - Dashboard (S1) dengan header mahasiswa lengkap (nama, NIM, prodi, IPK, total SKS lulus) (FR-01, UXR-01).
