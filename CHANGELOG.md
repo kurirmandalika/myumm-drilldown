@@ -56,6 +56,9 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 ## [0.2.0] - 2026-11-23
 
 ### Added
+- Layar Detail Kegiatan Prodi (K3) dengan informasi lengkap kategori, tanggal & waktu format Indonesia, tempat/mode (luring/daring), penyelenggara, deskripsi, dan status pendaftaran (FR-04).
+- Logika tombol sekunder pendaftaran yang hanya muncul ketika pendaftaran dibuka dan memiliki tautan resmi (FR-04).
+- Tombol utama "Ingatkan saya" interaktif yang berubah menjadi "Pengingat aktif · Ubah" saat pengingat aktif (FR-04, FR-05).
 - Layar Daftar Kegiatan Prodi (K2) dengan tab Akan Datang & Selesai, chip filter 5 kategori, dan pengelompokan per minggu (FR-02, FR-09).
 - Fitur tarik untuk muat ulang (pull-to-refresh) di K2 dengan pembaruan timestamp, umpan balik toast, dan penambahan kegiatan demo berlabel "Baru" (FR-03, FR-09).
 - Banner peringatan cache data tersimpan dengan tombol "Coba lagi" saat pemuatan gagal (FR-08).
