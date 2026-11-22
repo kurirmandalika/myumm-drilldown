@@ -56,6 +56,9 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 ## [0.2.0] - 2026-11-23
 
 ### Added
+- Toggle saklar simulasi di layar Profil: "Simulasikan gagal memuat kegiatan" dan "Simulasikan tidak ada kegiatan" untuk pengujian evaluasi usability testing prototype (FR-10).
+- Penanganan state data tersimpan (offline cache) dengan banner peringatan dan tombol "Coba lagi" saat gagal memuat kegiatan (FR-07, FR-08).
+- Tombol reset konfigurasi simulasi yang mengembalikan seluruh parameter mata kuliah dan kegiatan ke kondisi awal normal (FR-10).
 - Komponen Atur Pengingat (K4) berbentuk bottom sheet dengan radio button 1 hari, 3 jam, atau 1 jam sebelumnya serta tombol simpan dan hapus pengingat (FR-05).
 - Dialog Konfirmasi Pengingat (K5) dengan ikon sukses dan ringkasan lengkap yang menyebut judul kegiatan dan waktu pelaksanaan (FR-06).
 - Layar Kegiatan Saya (K6) untuk melihat seluruh kegiatan yang diberi pengingat, navigasi ke rincian kegiatan, aksi hapus pengingat dengan umpan balik toast, dan state kosong yang mengarahkan ke jelajahi kegiatan (FR-06).

@@ -18,17 +18,37 @@ import {
   resetSimulationState,
   subscribeSimulationState,
 } from '../../src/data/mataKuliah';
+import {
+  kegiatanSimulationState,
+  setSimulateKegiatanLoadError,
+  setSimulateEmptyKegiatan,
+  resetKegiatanSimulation,
+  subscribeKegiatanSimulation,
+} from '../../src/data/kegiatan';
 
 export default function ProfilScreen() {
   const [simulateError, setSimulateError] = useState(simulationState.simulateLoadError);
   const [simulateEmpty, setSimulateEmpty] = useState(simulationState.simulateEmptyBelumLulus);
+  const [simulateKegiatanError, setSimulateKegiatanError] = useState(
+    kegiatanSimulationState.simulateLoadError
+  );
+  const [simulateEmptyKegiatan, setSimulateEmptyKegiatan] = useState(
+    kegiatanSimulationState.simulateEmptyKegiatan
+  );
 
   useEffect(() => {
-    const unsubscribe = subscribeSimulationState(() => {
+    const unsubMK = subscribeSimulationState(() => {
       setSimulateError(simulationState.simulateLoadError);
       setSimulateEmpty(simulationState.simulateEmptyBelumLulus);
     });
-    return unsubscribe;
+    const unsubKeg = subscribeKegiatanSimulation(() => {
+      setSimulateKegiatanError(kegiatanSimulationState.simulateLoadError);
+      setSimulateEmptyKegiatan(kegiatanSimulationState.simulateEmptyKegiatan);
+    });
+    return () => {
+      unsubMK();
+      unsubKeg();
+    };
   }, []);
 
   const handleToggleError = (val: boolean) => {
@@ -39,8 +59,17 @@ export default function ProfilScreen() {
     setSimulateEmptyBelumLulus(val);
   };
 
+  const handleToggleKegiatanError = (val: boolean) => {
+    setSimulateKegiatanLoadError(val);
+  };
+
+  const handleToggleEmptyKegiatan = (val: boolean) => {
+    setSimulateEmptyKegiatan(val);
+  };
+
   const handleReset = () => {
     resetSimulationState();
+    resetKegiatanSimulation();
   };
 
   return (
@@ -131,6 +160,44 @@ export default function ProfilScreen() {
             trackColor={{ false: '#D1D5DB', true: Colors.status.lulus }}
             thumbColor={simulateEmpty ? '#FFFFFF' : '#F4F3F4'}
             accessibilityLabel="Simulasikan kondisi tidak ada mata kuliah belum lulus"
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* Toggle 3: Simulasikan gagal memuat kegiatan (FR-10, FR-08) */}
+        <View style={styles.switchRow}>
+          <View style={styles.switchInfo}>
+            <Text style={styles.switchLabel}>Simulasikan gagal memuat kegiatan</Text>
+            <Text style={styles.switchDesc}>
+              Memicu error saat memuat jadwal kegiatan prodi untuk menguji banner data tersimpan (offline cache) dan penanganan tombol "Coba lagi".
+            </Text>
+          </View>
+          <Switch
+            value={simulateKegiatanError}
+            onValueChange={handleToggleKegiatanError}
+            trackColor={{ false: '#D1D5DB', true: Colors.status.belumLulus }}
+            thumbColor={simulateKegiatanError ? '#FFFFFF' : '#F4F3F4'}
+            accessibilityLabel="Simulasikan gagal memuat kegiatan"
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* Toggle 4: Simulasikan tidak ada kegiatan (FR-10) */}
+        <View style={styles.switchRow}>
+          <View style={styles.switchInfo}>
+            <Text style={styles.switchLabel}>Simulasikan tidak ada kegiatan</Text>
+            <Text style={styles.switchDesc}>
+              Mengosongkan daftar jadwal kegiatan prodi untuk menguji pesan kondisi kosong dan tombol aksi lanjutan.
+            </Text>
+          </View>
+          <Switch
+            value={simulateEmptyKegiatan}
+            onValueChange={handleToggleEmptyKegiatan}
+            trackColor={{ false: '#D1D5DB', true: Colors.status.ditempuh }}
+            thumbColor={simulateEmptyKegiatan ? '#FFFFFF' : '#F4F3F4'}
+            accessibilityLabel="Simulasikan tidak ada kegiatan"
           />
         </View>
 
