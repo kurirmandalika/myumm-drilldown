@@ -58,6 +58,8 @@ export const Colors = {
   textInverse: "#FFFFFF",
 
   // Interactive feedback
+  ripple: "rgba(163, 9, 39, 0.12)",
+  accent: "#FF9800", // orange accent for badges
   cardPressed: "#F1F5F9",
 };
 export const Spacing = {
