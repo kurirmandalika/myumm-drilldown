@@ -23,6 +23,32 @@ export interface Mahasiswa {
   statusAkademik: string;
 }
 
+// PRD v2 - Kegiatan Prodi Types (§10)
+export type KategoriKegiatan = 'Seminar' | 'Workshop' | 'Kuliah Tamu' | 'Lomba' | 'Akademik';
+export type StatusPendaftaran = 'dibuka' | 'ditutup' | 'tanpa_pendaftaran';
+
+export interface Kegiatan {
+  id: string;
+  judul: string;
+  kategori: KategoriKegiatan;
+  mulai: string;            // ISO datetime
+  selesai?: string;         // ISO datetime
+  mode: 'luring' | 'daring';
+  tempat: string;           // ruang/gedung atau nama platform daring
+  penyelenggara: string;
+  deskripsi: string;
+  statusPendaftaran: StatusPendaftaran;
+  tautanPendaftaran?: string;
+  ditambahkanPada: string;  // ISO datetime, untuk label "Baru"
+}
+
+export interface Pengingat {
+  kegiatanId: string;
+  waktu: '1_hari' | '3_jam' | '1_jam';
+  dibuatPada: string;
+}
+
+// Legacy alias for compatibility with v1
 export interface KegiatanProdi {
   id: string;
   judul: string;
@@ -36,3 +62,4 @@ export interface KegiatanProdi {
 }
 
 export type TabStatus = 'semua' | StatusMK;
+

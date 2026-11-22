@@ -56,6 +56,8 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 ## [0.2.0] - 2026-11-23
 
 ### Added
+- Model data `Kegiatan`, `Pengingat`, serta generator tanggal relatif ISO untuk 14 agenda kegiatan prodi mencakup 10 kegiatan akan datang dan 4 kegiatan selesai di seluruh 5 kategori (FR-05, FR-08, FR-10).
+- Penyimpanan lokal pengingat kegiatan dan cache data tersimpan menggunakan AsyncStorage untuk mendukung akses offline (FR-05, FR-08).
 - Dashboard (S1) dengan header mahasiswa lengkap (nama, NIM, prodi, IPK, total SKS lulus) (FR-01, UXR-01).
 - Tiga kartu status mata kuliah yang interaktif (Lulus, Belum Lulus, Sedang Ditempuh) dengan signifier jelas: chevron '›', teks "Lihat rincian", dan badge status (FR-01, UXR-03).
 - Umpan balik visual ketukan langsung (highlight/ripple/opacity) dan pencegah navigasi ganda (FR-05, UXR-02).
