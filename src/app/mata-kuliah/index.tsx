@@ -6,14 +6,16 @@ import {
   StyleSheet,
   Pressable,
   TextInput,
-  ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, useRouter, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useAcademic } from "../../context/AcademicContext";
 import { SegmentedTabs } from "../../components/SegmentedTabs";
 import { CourseListItem } from "../../components/CourseListItem";
-import { Colors, Spacing, Typography } from "../../constants/theme";
+import { ErrorState } from "../../components/ErrorState";
+import { EmptyState } from "../../components/EmptyState";
+import { CourseSkeleton } from "../../components/LoadingSkeleton";
+import { Colors, Spacing } from "../../constants/theme";
 import { StatusMK, MataKuliah } from "../../types";
 import { calculateTotalSKS, getStatusLabel } from "../../utils/academic";
 
@@ -23,7 +25,6 @@ export default function DaftarMataKuliahScreen() {
   const { mataKuliahList, counts, isLoading, error, refreshData } =
     useAcademic();
 
-  // Validasi tab awal dari parameter URL
   const initialStatus: StatusMK =
     params.status === "lulus" ||
     params.status === "belum_lulus" ||
@@ -35,7 +36,6 @@ export default function DaftarMataKuliahScreen() {
   const [onlyWajib, setOnlyWajib] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Sync tab jika params status berubah
   useEffect(() => {
     if (
       params.status &&
@@ -47,7 +47,6 @@ export default function DaftarMataKuliahScreen() {
     }
   }, [params.status]);
 
-  // Filter list mata kuliah berdasarkan tab aktif, filter wajib, dan query pencarian
   const currentTabCourses = useMemo(
     () => mataKuliahList.filter((mk) => mk.status === activeTab),
     [mataKuliahList, activeTab]
@@ -126,7 +125,6 @@ export default function DaftarMataKuliahScreen() {
 
         {/* Baris Filter & Ringkasan SKS */}
         <View style={styles.filterSummaryRow}>
-          {/* Tombol Filter "Hanya wajib" (FR-03, UXR-04) */}
           <Pressable
             onPress={() => setOnlyWajib(!onlyWajib)}
             accessibilityRole="checkbox"
@@ -152,7 +150,6 @@ export default function DaftarMataKuliahScreen() {
             </Text>
           </Pressable>
 
-          {/* Ringkasan Jumlah MK & Total SKS (PRD S2) */}
           <View style={styles.summaryBadge}>
             <Text style={styles.summaryBadgeText}>
               {filteredCourses.length} MK • {filteredTotalSks} SKS
@@ -162,60 +159,59 @@ export default function DaftarMataKuliahScreen() {
         </View>
       </View>
 
-      {/* Konten Daftar Mata Kuliah */}
-      {isLoading ? (
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={Colors.primary} />
-          <Text style={styles.loadingText}>Memuat daftar mata kuliah...</Text>
+      {/* Konten Daftar Mata Kuliah / State Handling (FR-07) */}
+      {error ? (
+        <View style={styles.stateWrapper}>
+          <ErrorState
+            title="Gagal Memuat Mata Kuliah"
+            message={error}
+            onRetry={refreshData}
+            isRetrying={isLoading}
+          />
         </View>
-      ) : error ? (
-        <View style={styles.centerContainer}>
-          <Ionicons name="alert-circle-outline" size={48} color={Colors.primary} />
-          <Text style={styles.errorTitle}>Terjadi Kesalahan</Text>
-          <Text style={styles.errorDesc}>{error}</Text>
-          <Pressable
-            style={styles.retryButton}
-            onPress={refreshData}
-            accessibilityRole="button"
-            accessibilityLabel="Coba lagi memuat data"
-          >
-            <Text style={styles.retryButtonText}>Coba Lagi</Text>
-          </Pressable>
+      ) : isLoading && mataKuliahList.length === 0 ? (
+        <View style={styles.skeletonList}>
+          <CourseSkeleton />
+          <CourseSkeleton />
+          <CourseSkeleton />
+          <CourseSkeleton />
         </View>
       ) : filteredCourses.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Ionicons
-            name={
-              onlyWajib || searchQuery
-                ? "search-outline"
-                : activeTab === "belum_lulus"
-                ? "checkmark-circle-outline"
-                : "document-text-outline"
-            }
-            size={44}
-            color={Colors.textMuted}
-          />
-          <Text style={styles.emptyTitle}>
-            {onlyWajib
-              ? `Tidak ada mata kuliah wajib ${getStatusLabel(activeTab).toLowerCase()}`
-              : searchQuery
-              ? "Mata kuliah tidak ditemukan"
-              : activeTab === "belum_lulus"
-              ? "Bagus sekali! Tidak ada mata kuliah belum lulus."
-              : `Tidak ada mata kuliah ${getStatusLabel(activeTab).toLowerCase()}`}
-          </Text>
-          <Text style={styles.emptySubtitle}>
-            {onlyWajib || searchQuery
-              ? "Coba nonaktifkan filter atau gunakan kata kunci lain."
-              : "Seluruh mata kuliah telah memenuhi standar kelulusan."}
-          </Text>
-          {onlyWajib && (
-            <Pressable
-              style={styles.resetFilterBtn}
-              onPress={() => setOnlyWajib(false)}
-            >
-              <Text style={styles.resetFilterText}>Tampilkan Semua</Text>
-            </Pressable>
+        <View style={styles.stateWrapper}>
+          {onlyWajib ? (
+            <EmptyState
+              icon="filter-outline"
+              title="Tidak Ada Mata Kuliah Wajib"
+              description={`Tidak ditemukan mata kuliah berkategori wajib pada status ${getStatusLabel(activeTab).toLowerCase()}.`}
+              actionLabel="Tampilkan Semua Mata Kuliah"
+              onAction={() => setOnlyWajib(false)}
+            />
+          ) : searchQuery.length > 0 ? (
+            <EmptyState
+              icon="search-outline"
+              title="Mata Kuliah Tidak Ditemukan"
+              description={`Tidak ada hasil yang sesuai dengan kata kunci "${searchQuery}".`}
+              actionLabel="Hapus Kata Kunci"
+              onAction={() => setSearchQuery("")}
+            />
+          ) : activeTab === "belum_lulus" ? (
+            <EmptyState
+              icon="checkmark-circle-outline"
+              title="Semua Mata Kuliah Lulus!"
+              description="Hebat! Tidak ada catatan mata kuliah yang belum lulus pada semester ini."
+              actionLabel="Lihat Riwayat Studi"
+              onAction={() => router.push("/(tabs)/riwayat")}
+              secondaryActionLabel="Kembali ke Beranda"
+              onSecondaryAction={() => router.back()}
+            />
+          ) : (
+            <EmptyState
+              icon="file-tray-outline"
+              title={`Belum Ada Mata Kuliah ${getStatusLabel(activeTab)}`}
+              description={`Tidak ada mata kuliah berstatus ${getStatusLabel(activeTab).toLowerCase()} saat ini.`}
+              actionLabel="Lihat Riwayat Studi"
+              onAction={() => router.push("/(tabs)/riwayat")}
+            />
           )}
         </View>
       ) : (
@@ -306,67 +302,13 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.xs,
     paddingBottom: Spacing.xxxl,
   },
-  centerContainer: {
+  skeletonList: {
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xs,
+  },
+  stateWrapper: {
     flex: 1,
+    paddingHorizontal: Spacing.lg,
     justifyContent: "center",
-    alignItems: "center",
-    padding: Spacing.xl,
-  },
-  loadingText: {
-    ...Typography.body,
-    color: Colors.textMuted,
-    marginTop: Spacing.md,
-  },
-  errorTitle: {
-    ...Typography.subtitle,
-    color: Colors.primary,
-    marginTop: Spacing.md,
-  },
-  errorDesc: {
-    ...Typography.body,
-    color: Colors.textSecondary,
-    textAlign: "center",
-    marginTop: Spacing.xs,
-    marginBottom: Spacing.lg,
-  },
-  retryButton: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: Colors.textInverse,
-    fontWeight: "600",
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: Spacing.xxl,
-  },
-  emptyTitle: {
-    ...Typography.subtitle,
-    color: Colors.textPrimary,
-    textAlign: "center",
-    marginTop: Spacing.md,
-  },
-  emptySubtitle: {
-    ...Typography.body,
-    color: Colors.textMuted,
-    textAlign: "center",
-    marginTop: 4,
-    marginBottom: Spacing.md,
-  },
-  resetFilterBtn: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: Colors.primaryLight,
-  },
-  resetFilterText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: Colors.primary,
   },
 });

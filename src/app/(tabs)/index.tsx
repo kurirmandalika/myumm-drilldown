@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator,
   RefreshControl,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -13,6 +12,9 @@ import { useAcademic } from "../../context/AcademicContext";
 import { AcademicHeader } from "../../components/AcademicHeader";
 import { StatusSummaryCard } from "../../components/StatusSummaryCard";
 import { ProdiActivitySection } from "../../components/ProdiActivitySection";
+import { ErrorState } from "../../components/ErrorState";
+import { EmptyState } from "../../components/EmptyState";
+import { DashboardCardSkeleton } from "../../components/LoadingSkeleton";
 import { Colors, Spacing, Typography } from "../../constants/theme";
 import { calculateTotalSKS } from "../../utils/academic";
 import { KegiatanProdi, StatusMK } from "../../types";
@@ -24,6 +26,7 @@ export default function DashboardScreen() {
     mahasiswa,
     kegiatanProdiList,
     isLoading,
+    error,
     counts,
     ipk,
     totalSksLulus,
@@ -91,11 +94,27 @@ export default function DashboardScreen() {
           <Text style={styles.sectionNote}>Pilih kartu untuk drill-down</Text>
         </View>
 
-        {isLoading && mataKuliahList.length === 0 ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={Colors.primary} />
-            <Text style={styles.loadingText}>Memuat status studi...</Text>
+        {/* State Handling: Error, Loading Skeleton, Empty, or Cards (FR-07) */}
+        {error ? (
+          <ErrorState
+            title="Gagal Memuat Status Studi"
+            message={error}
+            onRetry={refreshData}
+            isRetrying={isLoading}
+          />
+        ) : isLoading && mataKuliahList.length === 0 ? (
+          <View style={styles.skeletonContainer}>
+            <DashboardCardSkeleton />
+            <DashboardCardSkeleton />
+            <DashboardCardSkeleton />
           </View>
+        ) : mataKuliahList.length === 0 ? (
+          <EmptyState
+            title="Tidak Ada Data Studi"
+            description="Data mata kuliah belum tersedia pada semester ini. Anda dapat memeriksa arsip riwayat studi pada menu navigasi."
+            actionLabel="Buka Riwayat Studi"
+            onAction={() => router.push("/(tabs)/riwayat")}
+          />
         ) : (
           <View style={styles.cardsContainer}>
             {/* 1. Belum Lulus (Prioritas Perhatian KRS) */}
@@ -169,14 +188,7 @@ const styles = StyleSheet.create({
   cardsContainer: {
     marginTop: Spacing.xs,
   },
-  loadingContainer: {
-    paddingVertical: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  loadingText: {
-    ...Typography.caption,
-    color: Colors.textMuted,
-    marginTop: Spacing.sm,
+  skeletonContainer: {
+    marginTop: Spacing.xs,
   },
 });

@@ -5,6 +5,13 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-23
+### Added
+- Penanganan status loading dengan skeleton placeholder (`CourseSkeleton`, `DashboardCardSkeleton`) dan jeda simulasi 600 ms (FR-05, FR-07).
+- Komponen `ErrorState` yang memuat penjelasan penyebab gangguan koneksi dan tombol aksi "Coba Lagi" (FR-07, UXR-06).
+- Komponen `EmptyState` dengan pesan informatif dan satu aksi lanjutan kontekstual (misal "Lihat Riwayat Studi" atau "Tampilkan Semua") untuk mencegah jalan buntu (FR-07, UXR-06).
+- Panel Simulator Pengujian State di layar Profil dengan toggle "Simulasikan gagal memuat" dan "Simulasikan data kosong" untuk demonstrasi evaluasi usability testing (FR-07).
+
 ## [0.4.0] - 2026-11-23
 ### Added
 - Layar Riwayat Studi (S4) sebagai jalur navigasi alternatif dari tab bar bawah yang selalu terlihat (FR-06, UXR-05).
