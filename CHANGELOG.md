@@ -56,6 +56,9 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 ## [0.2.0] - 2026-11-23
 
 ### Added
+- Layar Daftar Kegiatan Prodi (K2) dengan tab Akan Datang & Selesai, chip filter 5 kategori, dan pengelompokan per minggu (FR-02, FR-09).
+- Fitur tarik untuk muat ulang (pull-to-refresh) di K2 dengan pembaruan timestamp, umpan balik toast, dan penambahan kegiatan demo berlabel "Baru" (FR-03, FR-09).
+- Banner peringatan cache data tersimpan dengan tombol "Coba lagi" saat pemuatan gagal (FR-08).
 - Bagian Jadwal Kegiatan Prodi di Dashboard dengan 3 kegiatan terdekat, keterangan "Diperbarui [waktu]", blok tanggal visual, badge "Baru"/"Hari ini"/"Besok", dan tautan "Lihat semua ›" (K1, FR-01, FR-03, FR-11).
 - Tab Kegiatan pada navigasi bawah (Beranda, Kegiatan, Riwayat Studi, Profil) dan navigasi 1 ketukan dari Dashboard ke detail kegiatan (K1, FR-01, FR-11).
 - Komponen `KegiatanCard` dengan blok tanggal di kiri, badge kategori, indikator pengingat aktif, dan signifier chevron interaktif (FR-01, FR-11).
