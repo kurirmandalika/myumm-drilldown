@@ -53,7 +53,8 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 - Komponen `StatusSummaryCard` dengan penanda visual eksplisit berupa ikon chevron "›" dan teks "Lihat rincian" (FR-01).
 - Komponen `PressableCard` dengan umpan balik visual instan (ripple/highlight ≤ 100 ms) dan proteksi debounce untuk mencegah navigasi ganda (FR-05, UXR-02).
 - Pemisahan visual yang tegas antara elemen informasi statis (IPK dan SKS kumulatif) dan kartu aksi interaktif agar tidak menimbulkan *misleading affordance* (FR-01).
-- Bagian pratinjau Jadwal Kegiatan Prodi di Dashboard dengan tautan ke detail agenda (FR-08).
+- Implementasi tipe data Kegiatan Prodi dengan fitur baru (kategori, status pendaftaran, label "Baru") dan pembaruan dummy data (FR-01, FR-08).\
+- Penambahan tampilan pratinjau Jadwal Kegiatan Prodi pada Dashboard serta penambahan tab Kegiatan (FR-01, FR-08).
 
 ## [0.1.0] - 2026-11-23
 ### Added

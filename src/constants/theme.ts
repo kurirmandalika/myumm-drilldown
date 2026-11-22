@@ -58,10 +58,8 @@ export const Colors = {
   textInverse: "#FFFFFF",
 
   // Interactive feedback
-  ripple: "rgba(163, 9, 39, 0.12)",
   cardPressed: "#F1F5F9",
 };
-
 export const Spacing = {
   xs: 4,
   sm: 8,

@@ -10,6 +10,10 @@ export const DUMMY_KEGIATAN_PRODI: KegiatanProdi[] = [
     deskripsi:
       "Penjelasan alur pengisian Kartu Rencana Studi (KRS), kebijakan prasyarat mata kuliah kurikulum OBE, serta sesi tanya jawab bersama Ketua Program Studi dan Dosen Pembimbing Akademik.",
     penyelenggara: "Program Studi Informatika UMM",
+    kategori: "Seminar",
+    statusPendaftaran: "dibuka",
+    tautanPendaftaran: "https://example.com/keg-1",
+    ditambahkanPada: new Date().toISOString(),
   },
   {
     id: "keg-2",
@@ -20,6 +24,10 @@ export const DUMMY_KEGIATAN_PRODI: KegiatanProdi[] = [
     deskripsi:
       "Pelatihan intensif persiapan sertifikasi kompetensi LSP UMM untuk skema Pemrograman Web dan Mobile, ditujukan bagi mahasiswa semester 5 dan 7.",
     penyelenggara: "Laboratorium Informatika & LSP UMM",
+    kategori: "Workshop",
+    statusPendaftaran: "dibuka",
+    tautanPendaftaran: "https://example.com/keg-2",
+    ditambahkanPada: new Date().toISOString(),
   },
   {
     id: "keg-3",
@@ -30,5 +38,8 @@ export const DUMMY_KEGIATAN_PRODI: KegiatanProdi[] = [
     deskripsi:
       "Batas akhir penyerahan berkas proposal skripsi/tugas akhir yang telah disetujui oleh calon dosen pembimbing utama untuk mahasiswa angkatan 2023 ke atas.",
     penyelenggara: "Tim Tugas Akhir Prodi Informatika",
+    kategori: "Akademik",
+    statusPendaftaran: "tanpa_pendaftaran",
+    ditambahkanPada: new Date().toISOString(),
   },
 ];

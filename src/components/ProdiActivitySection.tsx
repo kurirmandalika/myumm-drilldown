@@ -24,45 +24,53 @@ export const ProdiActivitySection: React.FC<ProdiActivitySectionProps> = ({
         <Text style={styles.sectionBadge}>{kegiatanList.length} Agenda</Text>
       </View>
 
-      {kegiatanList.map((kegiatan) => (
-        <PressableCard
-          key={kegiatan.id}
-          onPress={() => onSelectKegiatan(kegiatan)}
-          accessibilityLabel={`Agenda prodi: ${kegiatan.judul}, tanggal ${kegiatan.tanggal}. Ketuk untuk melihat detail.`}
-          accessibilityHint="Membuka detail kegiatan prodi"
-          style={styles.activityCard}
-        >
-          <View style={styles.cardHeader}>
-            <View style={styles.dateTag}>
-              <Ionicons name="time-outline" size={12} color={Colors.primary} />
-              <Text style={styles.dateText}>{kegiatan.tanggal}</Text>
-            </View>
-            <Ionicons
-              name="chevron-forward"
-              size={16}
-              color={Colors.textMuted}
-            />
-          </View>
-
-          <Text style={styles.activityTitle} numberOfLines={2}>
-            {kegiatan.judul}
-          </Text>
-
-          <View style={styles.footerRow}>
-            <View style={styles.locationGroup}>
+      {kegiatanList.map((kegiatan) => {
+        const isNew = (() => {
+          const added = new Date(kegiatan.ditambahkanPada);
+          const diffDays = (Date.now() - added.getTime()) / (1000 * 60 * 60 * 24);
+          return diffDays <= 3;
+        })();
+        return (
+          <PressableCard
+            key={kegiatan.id}
+            onPress={() => onSelectKegiatan(kegiatan)}
+            accessibilityLabel={`Agenda prodi: ${kegiatan.judul}, tanggal ${kegiatan.tanggal}. Ketuk untuk melihat detail.`}
+            accessibilityHint="Membuka detail kegiatan prodi"
+            style={styles.activityCard}
+          >
+            <View style={styles.cardHeader}>
+              <View style={styles.dateTag}>
+                <Ionicons name="time-outline" size={12} color={Colors.primary} />
+                <Text style={styles.dateText}>{kegiatan.tanggal}</Text>
+                {isNew && <Text style={styles.newBadge}>Baru</Text>}
+              </View>
               <Ionicons
-                name="location-outline"
-                size={13}
+                name="chevron-forward"
+                size={16}
                 color={Colors.textMuted}
               />
-              <Text style={styles.locationText} numberOfLines={1}>
-                {kegiatan.tempat}
-              </Text>
             </View>
-            <Text style={styles.viewDetailText}>Detail ›</Text>
-          </View>
-        </PressableCard>
-      ))}
+
+            <Text style={styles.activityTitle} numberOfLines={2}>
+              {kegiatan.judul}
+            </Text>
+
+            <View style={styles.footerRow}>
+              <View style={styles.locationGroup}>
+                <Ionicons
+                  name="location-outline"
+                  size={13}
+                  color={Colors.textMuted}
+                />
+                <Text style={styles.locationText} numberOfLines={1}>
+                  {kegiatan.tempat}
+                </Text>
+              </View>
+              <Text style={styles.viewDetailText}>Detail ›</Text>
+            </View>
+          </PressableCard>
+        );
+      })}
     </View>
   );
 };
@@ -149,5 +157,14 @@ const styles = StyleSheet.create({
   viewDetailText: {
     ...Typography.captionMedium,
     color: Colors.primary,
+  },
+  newBadge: {
+    ...Typography.captionMedium,
+    color: Colors.textInverse,
+    backgroundColor: Colors.accent,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    marginLeft: 4,
   },
 });

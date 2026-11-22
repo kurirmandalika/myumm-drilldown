@@ -19,6 +19,10 @@ export interface KegiatanProdi {
   tempat: string;        // contoh: "Aula GKB IV Lt. 9 / Zoom"
   deskripsi: string;
   penyelenggara: string;
+  kategori: "Seminar" | "Workshop" | "Kuliah Tamu" | "Lomba" | "Akademik"; // new
+  statusPendaftaran: "dibuka" | "ditutup" | "tanpa_pendaftaran"; // new
+  tautanPendaftaran?: string; // optional
+  ditambahkanPada: string; // ISO datetime for label "Baru"
 }
 
 export interface Mahasiswa {
