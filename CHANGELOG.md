@@ -5,6 +5,12 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-23
+### Added
+- Layar Detail Kegiatan Prodi (S6) yang menampilkan judul agenda, tanggal, waktu pelaksanaan, ruang/media pertemuan, deskripsi lengkap, serta penyelenggara (FR-08).
+- Navigasi interaktif dari daftar item agenda pada Dashboard menuju layar detail kegiatan prodi (FR-08).
+- Tombol aksi simpan pengingat kalender dan bagikan agenda untuk mempermudah koordinasi mahasiswa (FR-08).
+
 ## [0.5.0] - 2026-11-23
 ### Added
 - Penanganan status loading dengan skeleton placeholder (`CourseSkeleton`, `DashboardCardSkeleton`) dan jeda simulasi 600 ms (FR-05, FR-07).
