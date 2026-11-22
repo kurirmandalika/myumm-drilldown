@@ -21,6 +21,7 @@ import {
 } from '../../src/data/mataKuliah';
 import { CourseItem } from '../../src/components/CourseItem';
 import { Skeleton } from '../../src/components/Skeleton';
+import { ErrorState } from '../../src/components/StateView';
 
 // Enable LayoutAnimation for Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -121,21 +122,12 @@ export default function RiwayatStudiScreen() {
 
   if (loadError) {
     return (
-      <View style={styles.errorContainer}>
-        <Ionicons name="cloud-offline-outline" size={56} color={Colors.status.belumLulus} />
-        <Text style={styles.errorTitle}>Data belum bisa dimuat</Text>
-        <Text style={styles.errorSubtitle}>
-          Periksa koneksi internet kamu, lalu coba lagi.
-        </Text>
-        <Pressable
-          onPress={() => loadData()}
-          accessibilityRole="button"
-          accessibilityLabel="Coba lagi memuat riwayat studi"
-          style={styles.retryButton}
-        >
-          <Ionicons name="refresh" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
-          <Text style={styles.retryButtonText}>Coba lagi</Text>
-        </Pressable>
+      <View style={styles.container}>
+        <ErrorState
+          title="Data belum bisa dimuat"
+          message="Periksa koneksi internet kamu, lalu coba lagi."
+          onRetry={() => loadData()}
+        />
       </View>
     );
   }

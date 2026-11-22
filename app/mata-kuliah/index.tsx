@@ -19,6 +19,7 @@ import {
 import { CourseItem } from '../../src/components/CourseItem';
 import { SegmentedTabs } from '../../src/components/SegmentedTabs';
 import { CourseListSkeleton } from '../../src/components/Skeleton';
+import { EmptyState, ErrorState } from '../../src/components/StateView';
 
 export default function MataKuliahListScreen() {
   const router = useRouter();
@@ -157,73 +158,46 @@ export default function MataKuliahListScreen() {
       {loading ? (
         <CourseListSkeleton />
       ) : loadError ? (
-        <View style={styles.errorContainer}>
-          <Ionicons name="cloud-offline-outline" size={56} color={Colors.status.belumLulus} />
-          <Text style={styles.errorTitle}>Data belum bisa dimuat</Text>
-          <Text style={styles.errorSubtitle}>
-            Periksa koneksi internet kamu, lalu coba lagi.
-          </Text>
-          <Pressable
-            onPress={() => loadData()}
-            accessibilityRole="button"
-            accessibilityLabel="Coba lagi memuat data"
-            style={({ pressed }) => [
-              styles.retryButton,
-              { opacity: pressed ? 0.8 : 1 },
-            ]}
-          >
-            <Ionicons name="refresh" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
-            <Text style={styles.retryButtonText}>Coba lagi</Text>
-          </Pressable>
-        </View>
+        <ErrorState
+          title="Data belum bisa dimuat"
+          message="Periksa koneksi internet kamu, lalu coba lagi."
+          onRetry={() => loadData()}
+        />
       ) : displayedCourses.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Ionicons
-            name={
-              activeTab === 'belum_lulus'
-                ? 'checkmark-done-circle-outline'
-                : 'file-tray-outline'
-            }
-            size={56}
-            color={activeTab === 'belum_lulus' ? Colors.status.lulus : Colors.textSecondary}
-          />
-          <Text style={styles.emptyTitle}>
-            {onlyWajib
+        <EmptyState
+          icon={
+            activeTab === 'belum_lulus'
+              ? 'checkmark-done-circle-outline'
+              : 'file-tray-outline'
+          }
+          iconColor={
+            activeTab === 'belum_lulus'
+              ? Colors.status.lulus
+              : Colors.textSecondary
+          }
+          title={
+            onlyWajib
               ? 'Tidak ada mata kuliah wajib'
               : activeTab === 'belum_lulus'
               ? 'Tidak ada mata kuliah yang belum lulus'
               : activeTab === 'ditempuh'
               ? 'Tidak ada mata kuliah sedang ditempuh'
-              : 'Tidak ada mata kuliah lulus'}
-          </Text>
-          <Text style={styles.emptySubtitle}>
-            {onlyWajib
+              : 'Tidak ada mata kuliah lulus'
+          }
+          message={
+            onlyWajib
               ? 'Tidak ditemukan mata kuliah berlabel wajib pada status ini.'
               : activeTab === 'belum_lulus'
               ? 'Semua mata kuliah yang pernah kamu ambil sudah lulus.'
-              : 'Belum ada mata kuliah yang terdaftar pada kategori ini.'}
-          </Text>
-
-          {onlyWajib ? (
-            <Pressable
-              onPress={() => setOnlyWajib(false)}
-              accessibilityRole="button"
-              accessibilityLabel="Tampilkan semua mata kuliah"
-              style={styles.actionButton}
-            >
-              <Text style={styles.actionButtonText}>Tampilkan semua</Text>
-            </Pressable>
-          ) : (
-            <Pressable
-              onPress={() => router.push('/(tabs)/riwayat')}
-              accessibilityRole="button"
-              accessibilityLabel="Buka halaman Riwayat Studi"
-              style={styles.actionButton}
-            >
-              <Text style={styles.actionButtonText}>Lihat Riwayat Studi</Text>
-            </Pressable>
-          )}
-        </View>
+              : 'Belum ada mata kuliah yang terdaftar pada kategori ini.'
+          }
+          actionLabel={onlyWajib ? 'Tampilkan semua' : 'Lihat Riwayat Studi'}
+          onAction={
+            onlyWajib
+              ? () => setOnlyWajib(false)
+              : () => router.push('/(tabs)/riwayat')
+          }
+        />
       ) : (
         <FlatList
           data={displayedCourses}

@@ -17,6 +17,7 @@ import {
 import { MataKuliah } from '../../src/types';
 import { Badge } from '../../src/components/Badge';
 import { Skeleton } from '../../src/components/Skeleton';
+import { ErrorState } from '../../src/components/StateView';
 
 export default function DetailMataKuliahScreen() {
   const router = useRouter();
@@ -77,21 +78,12 @@ export default function DetailMataKuliahScreen() {
 
   if (loadError || !course) {
     return (
-      <View style={styles.errorContainer}>
-        <Ionicons name="alert-circle-outline" size={56} color={Colors.status.belumLulus} />
-        <Text style={styles.errorTitle}>Data belum bisa dimuat</Text>
-        <Text style={styles.errorSubtitle}>
-          {loadError || 'Mata kuliah dengan kode tersebut tidak ditemukan.'}
-        </Text>
-        <Pressable
-          onPress={loadCourseDetail}
-          accessibilityRole="button"
-          accessibilityLabel="Coba lagi memuat detail"
-          style={styles.retryButton}
-        >
-          <Ionicons name="refresh" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
-          <Text style={styles.retryButtonText}>Coba lagi</Text>
-        </Pressable>
+      <View style={styles.container}>
+        <ErrorState
+          title="Data belum bisa dimuat"
+          message={loadError || 'Mata kuliah dengan kode tersebut tidak ditemukan.'}
+          onRetry={loadCourseDetail}
+        />
       </View>
     );
   }

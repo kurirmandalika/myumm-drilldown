@@ -5,6 +5,15 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-23
+
+### Added
+- Komponen terpusat `EmptyState` dan `ErrorState` (`src/components/StateView.tsx`) dengan pesan ramah, tanpa kode teknis, dan 1 aksi lanjutan yang jelas (FR-07, UXR-06).
+- Layar Profil lengkap (`app/(tabs)/profil.tsx`) dengan informasi profil akademik mahasiswa (FR-07).
+- Saklar toggle simulasi di layar Profil: "Simulasikan gagal memuat" dan "Simulasikan belum lulus kosong" untuk mendemonstrasikan evaluasi usability testing prototype (FR-07, UXR-06).
+- Tombol "Coba lagi" yang memuat ulang data saat terjadi kegagalan jaringan simulasi di seluruh layar (FR-07, UXR-06).
+- State kosong positif pada daftar belum lulus yang mengarahkan pengguna ke "Lihat Riwayat Studi" (FR-07, UXR-06).
+
 ## [0.4.0] - 2026-11-23
 
 ### Added
