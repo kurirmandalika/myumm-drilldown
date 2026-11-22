@@ -5,6 +5,13 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-23
+### Added
+- Layar Riwayat Studi (S4) sebagai jalur navigasi alternatif dari tab bar bawah yang selalu terlihat (FR-06, UXR-05).
+- Ringkasan IPK kumulatif, total SKS lulus, dan SKS sedang berjalan pada header Riwayat Studi.
+- Komponen daftar per semester dengan antarmuka accordion interaktif (bisa dibuka/tutup) dan kalkulasi IPS otomatis (FR-06).
+- Integrasi item mata kuliah di Riwayat Studi yang dapat ditekan untuk membuka Detail Mata Kuliah (FR-04).
+
 ## [0.3.0] - 2026-11-23
 ### Added
 - Layar Daftar Mata Kuliah (S2) dengan sinkronisasi tab otomatis sesuai kartu yang ditekan dari Dashboard (FR-02, UXR-01).
