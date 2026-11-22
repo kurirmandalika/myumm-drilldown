@@ -57,6 +57,31 @@ Urutan informasi dalam satu item (dari paling penting):
 - Tampilkan jumlah item di setiap tab, misalnya "Belum Lulus (3)". Angkanya harus sama dengan kartu Dashboard.
 - Di atas list tampilkan ringkasan tab aktif, misalnya "3 mata kuliah · 9 SKS".
 
+## 5a. Kegiatan prodi: kesegaran data, tanggal, dan pengingat
+
+**Kesegaran data**
+- Setiap layar yang menampilkan kegiatan wajib menampilkan **"Diperbarui [waktu relatif]"** di bawah judul bagian ("Diperbarui baru saja", "Diperbarui 5 menit lalu", "Diperbarui kemarin, 14.20").
+- Saat tarik untuk muat ulang, tampilkan indikator refresh bawaan platform. Setelah selesai, perbarui keterangan waktu dan tampilkan toast singkat: "1 kegiatan baru" atau "Sudah yang terbaru".
+- Bila memakai data tersimpan karena gagal memuat, tampilkan **banner kuning** di atas list: "Menampilkan data terakhir (diperbarui [waktu]). **Coba lagi**". Jangan sembunyikan data lama hanya karena gagal memuat.
+
+**Tanggal dan waktu**
+- Format: "Sen, 24 Nov 2026 · 09.00 WIB". Pakai titik untuk jam (09.00), bukan titik dua.
+- Di kartu list, tampilkan **blok tanggal** di kiri (angka tanggal besar + nama bulan singkat) supaya mudah dipindai.
+- Label waktu relatif sebagai badge: **"Hari ini"** (primer), **"Besok"**, **"Baru"** (biru). Maksimal 1 badge waktu + 1 badge "Baru" per kartu.
+- Kelompokkan list per periode dengan header: "Minggu ini", "Minggu depan", "Bulan ini", "Nanti".
+
+**Pengingat**
+- Tombol utama di detail: **"Ingatkan saya"** dengan ikon lonceng. Setelah aktif, tombol berubah jadi **"Pengingat aktif · Ubah"** dengan gaya sekunder, supaya statusnya jelas.
+- Pilihan waktu pengingat memakai **bottom sheet** dengan radio, bukan dropdown.
+- Setelah menyimpan, selalu konfirmasi dengan kalimat yang menyebut **apa dan kapan**: "Kamu akan diingatkan 1 hari sebelum Seminar UX, Sen, 24 Nov 2026."
+- Menghapus pengingat tidak perlu dialog konfirmasi. Cukup toast "Pengingat dihapus" dengan aksi **"Batalkan"** selama ±4 detik.
+- Kegiatan yang sudah diberi pengingat menampilkan ikon lonceng terisi di list.
+
+**Contoh teks state**
+- Kosong (Akan Datang): **"Belum ada kegiatan terjadwal"**, "Kegiatan baru dari prodi akan muncul di sini." Tombol: "Lihat kegiatan selesai".
+- Kosong (Kegiatan Saya): **"Belum ada pengingat"**, "Tekan Ingatkan saya di halaman kegiatan agar tidak terlewat." Tombol: "Jelajahi kegiatan".
+- Gagal: **"Kegiatan belum bisa dimuat"**, "Periksa koneksi internet kamu, lalu coba lagi." Tombol: "Coba lagi".
+
 ## 6. Warna dan status
 
 Status **tidak boleh** dibedakan hanya lewat warna. Selalu sertakan teks/label.
@@ -95,6 +120,12 @@ Kontras teks terhadap latar minimal WCAG AA (4.5:1 untuk teks normal).
 | Riwayat Studi | Transkrip, KHS, History |
 | Lihat rincian | Detail, Selengkapnya, More |
 | Coba lagi | Retry, Ulangi, Refresh |
+| Jadwal Kegiatan Prodi | Agenda, Event, Acara |
+| Kegiatan Saya | Kegiatanku, My Events, Tersimpan |
+| Ingatkan saya | Remind me, Notifikasi, Alarm |
+| Simpan pengingat | Simpan, OK, Set |
+| Akan Datang / Selesai | Upcoming / Past, Mendatang / Lampau |
+| Diperbarui [waktu] | Last updated, Update terakhir |
 
 Sapa pengguna dengan "kamu". Kalimat pendek, tanpa jargon teknis.
 
@@ -112,4 +143,6 @@ Sapa pengguna dengan "kamu". Kalimat pendek, tanpa jargon teknis.
 - [ ] Istilah sesuai tabel §9
 - [ ] Status tidak hanya dibedakan warna
 - [ ] Area sentuh ≥ 44×44 pt
+- [ ] Layar kegiatan menampilkan "Diperbarui [waktu]" dan data lama tetap tampil saat gagal memuat
+- [ ] Konfirmasi pengingat menyebut apa dan kapan
 - [ ] `CHANGELOG.md` diperbarui
