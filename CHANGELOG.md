@@ -56,6 +56,8 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 ## [0.2.0] - 2026-11-23
 
 ### Added
+- Pembaruan dokumentasi komprehensif pada `README.md` mencakup alur lengkap Jadwal Kegiatan Prodi (K1 s.d. K7), pemetaan kebutuhan fungsional FR-01 s.d. FR-11, skenario demo alur 6.1 (6 layar terpadu), pengujian banner offline cache, dan struktur folder proyek.
+- Validasi acceptance criteria PRD v2 Bagian 11 dan kepatuhan penuh panduan UX mobile pada `SKILL.md`.
 - Toggle saklar simulasi di layar Profil: "Simulasikan gagal memuat kegiatan" dan "Simulasikan tidak ada kegiatan" untuk pengujian evaluasi usability testing prototype (FR-10).
 - Penanganan state data tersimpan (offline cache) dengan banner peringatan dan tombol "Coba lagi" saat gagal memuat kegiatan (FR-07, FR-08).
 - Tombol reset konfigurasi simulasi yang mengembalikan seluruh parameter mata kuliah dan kegiatan ke kondisi awal normal (FR-10).
