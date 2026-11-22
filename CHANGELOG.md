@@ -5,6 +5,14 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-23
+### Added
+- Layar Daftar Mata Kuliah (S2) dengan sinkronisasi tab otomatis sesuai kartu yang ditekan dari Dashboard (FR-02, UXR-01).
+- Tampilan detail per mata kuliah di S2 mencakup kode, nama, SKS, semester, nilai, label "Wajib/Pilihan", dan indikator prasyarat (FR-03).
+- Filter "Hanya wajib" pada S2 untuk memudahkan identifikasi mata kuliah prioritas KRS dalam ≤ 30 detik (FR-03, UXR-04).
+- Layar Detail Mata Kuliah (S3) yang menampilkan rincian bobot SKS, nilai, status kelulusan, daftar mata kuliah prasyarat, serta mata kuliah lanjutan yang mensyaratkan mata kuliah terkait (FR-04).
+- Navigasi drill-down interaktif antar mata kuliah dari daftar prasyarat dan mata kuliah lanjutan (FR-04).
+
 ## [0.2.0] - 2026-11-23
 ### Added
 - Layar Dashboard (S1) dengan kartu ringkasan status mata kuliah yang dapat ditekan (FR-01, UXR-03).
