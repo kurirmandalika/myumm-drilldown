@@ -5,6 +5,16 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-23
+
+### Added
+- Dokumentasi komprehensif pada `README.md` mencakup latar belakang masalah, pemetaan fitur terhadap kebutuhan fungsional (FR-01 s.d. FR-08), panduan menjalankan aplikasi di Expo Go dan browser web, serta petunjuk skenario pengujian evaluasi usability testing.
+
+### Verified
+- Validasi seluruh acceptance criteria PRD Bagian 11 mencakup alur utama 1-ketukan dari Dashboard ke daftar mata kuliah, keselarasan angka kartu dan tab, filter mata kuliah wajib, navigasi prasyarat pada rincian mata kuliah, alur cadangan Riwayat Studi, dan pengujian state gagal/kosong.
+- Validasi kompilasi kode TypeScript (`npx tsc --noEmit`) dan bundling web statis (`npx expo export --platform web`) dengan hasil 100% lulus tanpa error.
+- Pemeriksaan menyeluruh kepatuhan terhadap seluruh aturan checklist pedoman antarmuka `SKILL.md`.
+
 ## [0.6.0] - 2026-11-23
 
 ### Added
