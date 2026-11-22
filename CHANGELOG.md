@@ -5,6 +5,15 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-23
+
+### Added
+- Layar Riwayat Studi (S4) sebagai alur navigasi cadangan yang selalu dapat diakses dari tab navigasi bawah (FR-06, UXR-05).
+- Ringkasan akademik lengkap di bagian atas: IPK Kumulatif, total SKS Lulus, Belum Lulus, dan Sedang Ditempuh (FR-06).
+- Tampilan riwayat mata kuliah per semester dengan model akordeon buka-tutup (collapsible) yang intuitif (FR-06).
+- Item mata kuliah di Riwayat Studi dapat ditekan untuk melihat rincian di Detail Mata Kuliah (S3) (FR-04, FR-06).
+- Dukungan animasi layout, pull-to-refresh, skeleton loading, dan state penanganan gagal memuat (FR-05, FR-07).
+
 ## [0.3.0] - 2026-11-23
 
 ### Added
